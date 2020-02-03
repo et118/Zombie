@@ -39,7 +39,7 @@ public class GameView extends JPanel {
         double y_disp;
         GroundTile tile;
         // System.out.println(scale);
-        x_disp = camera.x * (scale) + (width / 2) - scale / 2;
+        x_disp = 0 - (camera.x * (scale) - (width / 2) - scale / 2 + 1 * scale);
         y_disp = camera.y * (scale) + (height / 2) - scale / 2;
         for (int x_count = 0; x_count < map.length; x_count++) {
             
@@ -59,9 +59,9 @@ public class GameView extends JPanel {
                         g2d.drawImage(sandImage, (int)Vx, (int)Vy, scale, scale, this);
                         
                     }
-                    //g2d.drawString(Integer.toString(tile.getY()), (int)(Vx) + scale / 2, (int)Vy + scale / 2);
+                    g2d.drawString(Integer.toString(tile.getX()), (int)(Vx) + scale / 2, (int)Vy + scale / 2);
                     //if(tileX == 0 && tileY == 0) {
-                    //    g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);
+                    //g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);
                     //}
                         
                     
@@ -73,6 +73,13 @@ public class GameView extends JPanel {
         } // (player_image.getWidth(this) / 2)
     }
 
+    private void drawEntities(Graphics2D g2d) {
+
+    }
+    
+    private void drawPlayer(Graphics2D g2d) {
+        
+    }
     public void paint(Graphics g) {
         fpsStart = new Date().getTime();
         if(fpsStart >= fpsEnd) {
@@ -85,10 +92,13 @@ public class GameView extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawGround(g2d);
+        drawPlayer(g2d);
+        drawEntities(g2d);
 
         g2d.setColor(Color.black);
         g2d.setStroke(new BasicStroke(3.0f));
         g2d.drawString("Fps: " + fps, 10, 10);
+        g2d.drawString("X: " + Double.toString(Math.round(camera.x * 100.0) / 100.0) + " Y: " + Double.toString(Math.round(camera.y * 100.0) / 100.0),50,10);
         g2d.drawLine((width / 2) - 10, height / 2, (width / 2) + 10, height / 2);
         g2d.drawLine((width / 2), (height / 2) - 10, (width / 2), (height / 2) + 10);
         

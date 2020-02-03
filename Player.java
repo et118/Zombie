@@ -7,10 +7,35 @@ public class Player {
     public double xSpeed;
     public double ySpeed;
     public boolean run = false;
+    public double x;
+    public double y;
 
-    public Player(double xSpeed, double ySpeed) {
+    public Player(double x, double y,double xSpeed, double ySpeed) {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
+        this.x = x;
+        this.y = y;
+    }
+
+    public void move() {
+        double multi = 1;
+        if(run) {
+            multi = 3;
+        } else {
+            multi = 1;
+        }
+        if(w_pressed && !s_pressed ) {
+            y += ySpeed * multi;
+        }
+        if(s_pressed && !w_pressed){
+            y -= ySpeed * multi;
+        }
+        if(a_pressed && !d_pressed ){
+            x -= xSpeed * multi;
+        }
+        if(d_pressed && !a_pressed) {
+            x += xSpeed * multi;
+        }
     }
 
 }

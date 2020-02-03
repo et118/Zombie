@@ -11,7 +11,7 @@ public class Game {
     public Camera camera;
     public GroundTile[][] map;
     private int zoom = 10;
-    private int mapSize = 100;
+    private int mapSize = 9;
     private Random rand;
     private double xSpeed = 0.05;
     private double ySpeed = 0.05;
@@ -57,8 +57,9 @@ public class Game {
         frame.requestFocus();
         int width = (int)frame.getContentPane().getSize().getWidth();
         int height = (int)frame.getContentPane().getSize().getHeight();
-        camera = new Camera(0, 0);
-        player = new Player(xSpeed,ySpeed);
+        
+        player = new Player(0,0,xSpeed,ySpeed);
+        camera = new Camera(player.x, player.y);
         map = generateMap(mapSize);
         gameView = new GameView(map, camera,zoom,width,height);
         frame.add(gameView);
@@ -71,6 +72,7 @@ public class Game {
         viewThread.start();
 
         while(true) {
+            player.move();
             camera.move(player);
             Thread.sleep(16);
             //System.out.println(map[0][0].y);

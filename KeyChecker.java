@@ -14,7 +14,7 @@ class KeyChecker extends KeyAdapter {
         char ch = k.getKeyChar();
         ch = Character.toLowerCase(ch);
         //System.out.println(k.getKeyText(k.getKeyCode()));
-        if (k.getKeyText(k.getKeyCode()) == "Shift") {
+        if (KeyEvent.getKeyText(k.getKeyCode()) == "Shift") {
             player.run = true;
         }
         if (ch == 'w') {
@@ -39,7 +39,7 @@ class KeyChecker extends KeyAdapter {
         char ch = k.getKeyChar();
         ch = Character.toLowerCase(ch);
 
-        if (k.getKeyText(k.getKeyCode()) == "Shift") {
+        if (KeyEvent.getKeyText(k.getKeyCode()) == "Shift") {
             player.run = false;
         }
         if (ch == 'w') {
