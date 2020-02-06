@@ -47,6 +47,7 @@ public class GameView extends JPanel {
                 tile = map[x_count][y_count];
                 int tileX = tile.getX();
                 int tileY = -tile.getY();
+                
                 Vx = tileX * scale + x_disp;
                 Vy = tileY * scale + y_disp;
                 
@@ -59,10 +60,12 @@ public class GameView extends JPanel {
                         g2d.drawImage(sandImage, (int)Vx, (int)Vy, scale, scale, this);
                         
                     }
-                    g2d.drawString(Integer.toString(tile.getX()), (int)(Vx) + scale / 2, (int)Vy + scale / 2);
-                    //if(tileX == 0 && tileY == 0) {
-                    //g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);
-                    //}
+                    g2d.drawString("X:" + Integer.toString(tile.getX()) + "Y:" + Integer.toString(tile.getY()), (int)(Vx) + (scale / 2) - 20, (int)Vy + scale / 2);
+                    if(tile.getY() == 3 && tile.getX() == 2) {
+                        g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);
+                        //System.out.println(map[x_count][y_count].getY());
+                        //System.out.println(tileY);
+                    }
                         
                     
                     

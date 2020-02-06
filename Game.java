@@ -27,8 +27,8 @@ public class Game {
             for(int y = 0; y < size; y++) {
                 
                 int tileX = x - (size / 2);
-                int tileY = y;
-                tileY -= (size / 2);
+                int tileY = y - (size / 2);
+                //tileY = tileY;
                 //System.out.println(tileY);
                 genMap[x][y] = new GroundTile(tileX, tileY, rand.nextInt(2));
                 //System.out.println(genMap[x][y].getY());
