@@ -23,8 +23,30 @@ public class Game {
     private long endTime;
     public Game(int seed) {
         this.seed = seed;
-        this.rand = new Random(seed);
+        if(seed == 1) {
+            this.rand = new Random();    
+        } else {
+            this.rand = new Random(seed);
+        }
         this.entities = new Vector(1);
+    }
+
+    public void checkCollisions() {
+        for(int i = 0; i < entities.size(); i++) {
+            Entity entity = (Entity) entities.get(i);
+            boolean collide;
+            if(Math.pow(player.x - entity.x,2) + Math.pow(entity.y-player.y,2) <= Math.pow(entity.size / 2+player.size / 2,2)) {
+                collide = true;
+            }
+            else {
+                collide = false;
+            }
+            if(collide) {
+                entity.collide = collide;
+            } else {
+                entity.collide = false;
+            }
+        }
     }
     
     private GroundTile[][] generateMap(int size) {
@@ -65,8 +87,9 @@ public class Game {
         int width = (int)frame.getContentPane().getSize().getWidth();
         int height = (int)frame.getContentPane().getSize().getHeight();
         
-        player = new Player(0,0,xSpeed,ySpeed);
-        entities.add(new Entity("zombie",2,2));
+        player = new Player(0,0,xSpeed,ySpeed, 1);
+        entities.add(new Entity("zombie",2,2,rand,300));
+        entities.add(new Entity("zombie",-5,-3,rand,300));
         camera = new Camera(player.x, player.y);
         map = generateMap(mapSize);
         gameView = new GameView(map, camera,player,entities,zoom,width,height);
@@ -76,6 +99,7 @@ public class Game {
         while(true) {
             startTime = new Date().getTime();
             player.move();
+            checkCollisions();
             camera.move(player);
             gameView.repaint();
             endTime = new Date().getTime();

@@ -9,19 +9,13 @@ public class Player {
     public boolean run = false;
     public double x;
     public double y;
-
-    public Player(double x, double y,double xSpeed, double ySpeed) {
+    public double size;
+    public Player(double x, double y,double xSpeed, double ySpeed,double size) {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.x = x;
         this.y = y;
-    }
-
-    public double getX() {
-        return x;
-    }
-    public double getY() {
-        return y;
+        this.size = size;
     }
 
     public void move() {

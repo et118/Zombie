@@ -55,13 +55,13 @@ public class GameView extends JPanel {
             
             for (int y_count = 0; y_count < map[x_count].length; y_count++) {
                 tile = map[x_count][y_count];
-                int tileX = tile.getX();
-                int tileY = -tile.getY();
+                int tileX = tile.x;
+                int tileY = -tile.y;
                 
                 Vx = tileX * scale + x_disp;
                 Vy = tileY * scale + y_disp;
                 
-                if ((Vx < width && Vx > -scale) && (Vy < height && Vy > -scale)) {
+                if ((Vx < width + scale && Vx > -scale) && (Vy < height + scale && Vy > -scale)) {
                     
                    
                     if(tile.type == 0) {
@@ -70,7 +70,7 @@ public class GameView extends JPanel {
                         g2d.drawImage(sandImage, (int)Vx, (int)Vy, scale, scale, this);
                         
                     }
-                    g2d.drawString("X:" + Integer.toString(tile.getX()) + "Y:" + Integer.toString(tile.getY()), (int)(Vx) + (scale / 2) - 20, (int)Vy + scale / 2);
+                    g2d.drawString("X:" + Integer.toString(tile.x) + "Y:" + Integer.toString(tile.y), (int)(Vx) + (scale / 2) - 20, (int)Vy + scale / 2);
                     //if(tile.getY() == 3 && tile.getX() == 2) {
                     //    g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);
                         //System.out.println(map[x_count][y_count].getY());
@@ -93,15 +93,21 @@ public class GameView extends JPanel {
             double Vy;
             double x_disp;
             double y_disp;
-            double playerX = entity.getX();
-            double playerY = -entity.getY();
-            int scaleModifier = 1;
-            int playerscale = scale * scaleModifier;
+            double playerX = entity.x;
+            double playerY = -entity.y;
+            double scaleModifier = entity.size;
+            int playerscale = (int)((double)scale * scaleModifier);
             x_disp = 0 - (camera.x * (scale) - (width / 2) + playerscale / 2);
             y_disp = camera.y * (scale) + (height / 2) - playerscale / 2;
             Vx = playerX * scale + x_disp;
             Vy = playerY * scale + y_disp;
-            g2d.drawOval((int)Vx, (int)Vy, playerscale, playerscale);
+            if(!entity.collide) {
+                g2d.setColor(Color.red);
+            } else {
+                g2d.setColor(Color.blue);
+            }
+            
+            g2d.fillOval((int)Vx, (int)Vy, playerscale, playerscale);
             //g2d.drawLine((int)Vx, (int)Vy, (int)Vx + playerscale, (int)Vy + playerscale);
         }
     }
@@ -111,17 +117,20 @@ public class GameView extends JPanel {
         double Vy;
         double x_disp;
         double y_disp;
-        double playerX = player.getX();
-        double playerY = -player.getY();
-        int playerscale = scale * 1;
+        double playerX = player.x;
+        double playerY = -player.y;
+        double scaleModifier = player.size;
+        int playerscale = (int)((double)scale * scaleModifier);
         x_disp = 0 - (camera.x * (scale) - (width / 2) + playerscale / 2);// + 1 * playerscale);
         y_disp = camera.y * (scale) + (height / 2) - playerscale / 2;
         Vx = playerX * scale + x_disp;
         Vy = playerY * scale + y_disp;
-        g2d.drawOval((int)Vx, (int)Vy, playerscale, playerscale);
+        g2d.setColor(Color.green);
+        g2d.fillOval((int)Vx, (int)Vy, playerscale, playerscale);
         //g2d.drawImage(playerImage, (int)Vx, (int)Vy, playerscale, playerscale, this);
         //g2d.drawLine((int)Vx, (int)Vy, (int)Vx + playerscale, (int)Vy + playerscale);
     }
+
     @Override
     public void paint(Graphics g) {
         fpsStart = new Date().getTime();
@@ -137,7 +146,6 @@ public class GameView extends JPanel {
         drawGround(g2d);
         drawPlayer(g2d);
         drawEntities(g2d);
-
         g2d.setColor(Color.black);
         g2d.setStroke(new BasicStroke(3.0f));
         g2d.drawString("Fps: " + fps, 10, 10);
