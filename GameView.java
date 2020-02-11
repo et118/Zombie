@@ -1,6 +1,7 @@
 import javax.swing.JPanel;
 import java.awt.Graphics2D;
 import java.util.Date;
+import java.util.Vector;
 import java.awt.Graphics;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -20,15 +21,24 @@ public class GameView extends JPanel {
     private int height;
     private Image grassImage;
     private Image sandImage;
-    public GameView(GroundTile[][] map, Camera camera, int zoom,int width, int height) {
+    private Image playerImage;
+    private Player player;
+    private Vector entities;
+    private Image zombieImage;
+    public GameView(GroundTile[][] map, Camera camera, Player player,Vector entities, int zoom,int width, int height) {
+        Toolkit.getDefaultToolkit().sync();
         this.fps = 0;
         this.map = map;
         this.camera = camera;
+        this.player = player;
+        this.entities = entities;
         this.scale = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() / zoom;
         this.width = width;
         this.height = height;
         this.grassImage = Toolkit.getDefaultToolkit().createImage("Images/grass.png");
         this.sandImage = Toolkit.getDefaultToolkit().createImage("Images/sand2.png");
+        //this.playerImage = Toolkit.getDefaultToolkit().createImage("Images/player.gif");
+        //this.zombieImage = Toolkit.getDefaultToolkit().createImage("Images/zombie.png");
         //System.out.println(scale);
     }
 
@@ -61,11 +71,11 @@ public class GameView extends JPanel {
                         
                     }
                     g2d.drawString("X:" + Integer.toString(tile.getX()) + "Y:" + Integer.toString(tile.getY()), (int)(Vx) + (scale / 2) - 20, (int)Vy + scale / 2);
-                    if(tile.getY() == 3 && tile.getX() == 2) {
-                        g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);
+                    //if(tile.getY() == 3 && tile.getX() == 2) {
+                    //    g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);
                         //System.out.println(map[x_count][y_count].getY());
                         //System.out.println(tileY);
-                    }
+                    //}
                         
                     
                     
@@ -77,12 +87,42 @@ public class GameView extends JPanel {
     }
 
     private void drawEntities(Graphics2D g2d) {
-
+        for(int x = 0; x < entities.size(); x++) {
+            Entity entity = (Entity) entities.get(x);
+            double Vx;
+            double Vy;
+            double x_disp;
+            double y_disp;
+            double playerX = entity.getX();
+            double playerY = -entity.getY();
+            int scaleModifier = 1;
+            int playerscale = scale * scaleModifier;
+            x_disp = 0 - (camera.x * (scale) - (width / 2) + playerscale / 2);
+            y_disp = camera.y * (scale) + (height / 2) - playerscale / 2;
+            Vx = playerX * scale + x_disp;
+            Vy = playerY * scale + y_disp;
+            g2d.drawOval((int)Vx, (int)Vy, playerscale, playerscale);
+            //g2d.drawLine((int)Vx, (int)Vy, (int)Vx + playerscale, (int)Vy + playerscale);
+        }
     }
     
     private void drawPlayer(Graphics2D g2d) {
-        
+        double Vx;
+        double Vy;
+        double x_disp;
+        double y_disp;
+        double playerX = player.getX();
+        double playerY = -player.getY();
+        int playerscale = scale * 1;
+        x_disp = 0 - (camera.x * (scale) - (width / 2) + playerscale / 2);// + 1 * playerscale);
+        y_disp = camera.y * (scale) + (height / 2) - playerscale / 2;
+        Vx = playerX * scale + x_disp;
+        Vy = playerY * scale + y_disp;
+        g2d.drawOval((int)Vx, (int)Vy, playerscale, playerscale);
+        //g2d.drawImage(playerImage, (int)Vx, (int)Vy, playerscale, playerscale, this);
+        //g2d.drawLine((int)Vx, (int)Vy, (int)Vx + playerscale, (int)Vy + playerscale);
     }
+    @Override
     public void paint(Graphics g) {
         fpsStart = new Date().getTime();
         if(fpsStart >= fpsEnd) {
@@ -101,7 +141,7 @@ public class GameView extends JPanel {
         g2d.setColor(Color.black);
         g2d.setStroke(new BasicStroke(3.0f));
         g2d.drawString("Fps: " + fps, 10, 10);
-        g2d.drawString("X: " + Double.toString(Math.round(camera.x * 100.0) / 100.0) + " Y: " + Double.toString(Math.round(camera.y * 100.0) / 100.0),50,10);
+        g2d.drawString("X: " + Double.toString(Math.round(player.x * 100.0) / 100.0) + " Y: " + Double.toString(Math.round(player.y * 100.0) / 100.0),50,10);
         g2d.drawLine((width / 2) - 10, height / 2, (width / 2) + 10, height / 2);
         g2d.drawLine((width / 2), (height / 2) - 10, (width / 2), (height / 2) + 10);
         

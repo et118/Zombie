@@ -17,6 +17,13 @@ public class Player {
         this.y = y;
     }
 
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
+
     public void move() {
         double multi = 1;
         if(run) {

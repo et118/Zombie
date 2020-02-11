@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Random;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 
@@ -10,8 +11,9 @@ public class Game {
     private GameView gameView;
     public Camera camera;
     public GroundTile[][] map;
+    private Vector entities;
     private int zoom = 10;
-    private int mapSize = 9;
+    private int mapSize = 100;
     private Random rand;
     private double xSpeed = 0.05;
     private double ySpeed = 0.05;
@@ -19,6 +21,7 @@ public class Game {
     public Game(int seed) {
         this.seed = seed;
         this.rand = new Random(seed);
+        this.entities = new Vector(1);
     }
     
     private GroundTile[][] generateMap(int size) {
@@ -48,6 +51,7 @@ public class Game {
     }
     
     public void start() throws InterruptedException {
+        Toolkit.getDefaultToolkit().sync();
         frame = new JFrame();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize((int)screenSize.getWidth(),(int)screenSize.getHeight());
@@ -59,9 +63,10 @@ public class Game {
         int height = (int)frame.getContentPane().getSize().getHeight();
         
         player = new Player(0,0,xSpeed,ySpeed);
+        entities.add(new Entity("zombie",2,2));
         camera = new Camera(player.x, player.y);
         map = generateMap(mapSize);
-        gameView = new GameView(map, camera,zoom,width,height);
+        gameView = new GameView(map, camera,player,entities,zoom,width,height);
         frame.add(gameView);
         frame.addKeyListener(new KeyChecker(player));
 
