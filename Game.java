@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Date;
 import java.util.Random;
 import java.util.Vector;
 
@@ -18,6 +19,8 @@ public class Game {
     private double xSpeed = 0.05;
     private double ySpeed = 0.05;
     private Player player;
+    private long startTime;
+    private long endTime;
     public Game(int seed) {
         this.seed = seed;
         this.rand = new Random(seed);
@@ -70,16 +73,17 @@ public class Game {
         frame.add(gameView);
         frame.addKeyListener(new KeyChecker(player));
 
-        
-
-        ViewLoop viewLoop = new ViewLoop(gameView);
-        Thread viewThread = new Thread(viewLoop);
-        viewThread.start();
-
         while(true) {
+            startTime = new Date().getTime();
             player.move();
             camera.move(player);
-            Thread.sleep(16);
+            gameView.repaint();
+            endTime = new Date().getTime();
+            long totalTime = startTime - endTime;
+            if(16 - totalTime < 0) {
+                totalTime = 16;
+            }
+            Thread.sleep(16 - totalTime); 
             //System.out.println(map[0][0].y);
         }
     }
