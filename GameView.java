@@ -5,11 +5,16 @@ import java.util.Vector;
 import java.awt.Graphics;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.net.URL;
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.BasicStroke;
 
 public class GameView extends JPanel {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     public int fps;
     private int fpsCounter;
     private long fpsStart;
@@ -21,11 +26,10 @@ public class GameView extends JPanel {
     private int height;
     private Image grassImage;
     private Image sandImage;
-    private Image playerImage;
     private Player player;
-    private Vector entities;
-    private Image zombieImage;
-    public GameView(GroundTile[][] map, Camera camera, Player player,Vector entities, int zoom,int width, int height) {
+    private Vector<Entity> entities;
+    private Toolkit tk;
+    public GameView(GroundTile[][] map, Camera camera, Player player,Vector<Entity> entities, int zoom,int width, int height) {
         Toolkit.getDefaultToolkit().sync();
         this.fps = 0;
         this.map = map;
@@ -35,8 +39,13 @@ public class GameView extends JPanel {
         this.scale = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() / zoom;
         this.width = width;
         this.height = height;
-        this.grassImage = Toolkit.getDefaultToolkit().createImage("Images/grass.png");
-        this.sandImage = Toolkit.getDefaultToolkit().createImage("Images/sand2.png");
+        this.tk = Toolkit.getDefaultToolkit();
+        URL url = this.getClass().getResource("Images/grass.png");
+        this.grassImage = tk.getImage(url);
+        //this.grassImage = Toolkit.getDefaultToolkit().createImage("Images/grass.png");
+        //this.sandImage = Toolkit.getDefaultToolkit().createImage("Images/sand2.png");
+        url = this.getClass().getResource("Images/sand2.png");
+        this.sandImage = tk.getImage(url);
         //this.playerImage = Toolkit.getDefaultToolkit().createImage("Images/player.gif");
         //this.zombieImage = Toolkit.getDefaultToolkit().createImage("Images/zombie.png");
         //System.out.println(scale);

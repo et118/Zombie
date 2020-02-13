@@ -7,12 +7,11 @@ import java.util.Vector;
 import javax.swing.JFrame;
 
 public class Game {
-    private int seed;
     private JFrame frame;
     private GameView gameView;
     public Camera camera;
     public GroundTile[][] map;
-    private Vector entities;
+    private Vector<Entity> entities;
     private int zoom = 10;
     private int mapSize = 100;
     private Random rand;
@@ -21,60 +20,59 @@ public class Game {
     private Player player;
     private long startTime;
     private long endTime;
+
     public Game(int seed) {
-        this.seed = seed;
-        if(seed == 1) {
-            this.rand = new Random();    
+        if (seed == 1) {
+            this.rand = new Random();
         } else {
             this.rand = new Random(seed);
         }
-        this.entities = new Vector(1);
+        this.entities = new Vector<Entity>(1);
     }
 
     public void checkCollisions() {
-        for(int i = 0; i < entities.size(); i++) {
+        for (int i = 0; i < entities.size(); i++) {
             Entity entity = (Entity) entities.get(i);
             boolean collide;
-            if(Math.pow(player.x - entity.x,2) + Math.pow(entity.y-player.y,2) <= Math.pow(entity.size / 2+player.size / 2,2)) {
+            if (Math.pow(player.x - entity.x, 2) + Math.pow(entity.y - player.y, 2) <= Math
+                    .pow(entity.size / 2 + player.size / 2, 2)) {
                 collide = true;
-            }
-            else {
+            } else {
                 collide = false;
             }
-            if(collide) {
+            if (collide) {
                 entity.collide = collide;
             } else {
                 entity.collide = false;
             }
         }
     }
-    
+
     private GroundTile[][] generateMap(int size) {
         GroundTile[][] genMap = new GroundTile[size][size];
-        for(int x = 0; x < size; x++) {
-            for(int y = 0; y < size; y++) {
-                
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+
                 int tileX = x - (size / 2);
                 int tileY = y - (size / 2);
-                //tileY = tileY;
-                //System.out.println(tileY);
+                // tileY = tileY;
+                // System.out.println(tileY);
                 genMap[x][y] = new GroundTile(tileX, tileY, rand.nextInt(2));
-                //System.out.println(genMap[x][y].getY());
-                
-                //System.out.println(genMap[x][y].y);
-                //genMap[x][y].y = 0 - genMap[x][y].y;
-                //System.out.println(genMap[x][y].y);
-                //System.out.println((0 - (y - (size / 2))));
-                //System.out.println((y - (size / 2)));
+                // System.out.println(genMap[x][y].getY());
 
-                
-                //System.out.println(x - (size / 2));
+                // System.out.println(genMap[x][y].y);
+                // genMap[x][y].y = 0 - genMap[x][y].y;
+                // System.out.println(genMap[x][y].y);
+                // System.out.println((0 - (y - (size / 2))));
+                // System.out.println((y - (size / 2)));
+
+                // System.out.println(x - (size / 2));
             }
         }
 
         return genMap;
     }
-    
+
     public void start() throws InterruptedException {
         Toolkit.getDefaultToolkit().sync();
         frame = new JFrame();
