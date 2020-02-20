@@ -30,22 +30,106 @@ public class Game {
         this.entities = new Vector<Entity>(1);
     }
 
-    public void checkCollisions() {
+    private void entityCollide() {
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = (Entity) entities.get(i);
-            boolean collide;
+            
             if (Math.pow(player.x - entity.x, 2) + Math.pow(entity.y - player.y, 2) <= Math
                     .pow(entity.size / 2 + player.size / 2, 2)) {
-                collide = true;
-            } else {
-                collide = false;
-            }
-            if (collide) {
-                entity.collide = collide;
+                entity.collide = true;
             } else {
                 entity.collide = false;
             }
+
         }
+    }
+
+    private void tileCollide() {
+        player.canMoveDown = true;
+        player.canMoveUp = true;
+        player.canMoveLeft = true;
+        player.canMoveRight = true;
+        for (int x = 0; x < mapSize; x++) {
+            for (int y = 0; y < mapSize; y++) {
+                GroundTile tile = map[x][y];
+                if(tile.collision) {
+                    double cx = player.x;
+                    double cy = player.y;
+                    double r = player.size;
+
+                    double rx = tile.x - 0.5;
+                    double ry = tile.y + 0.5;
+                    double rw = 1;
+                    double rh = 1;
+                    double testX = cx;
+                    double testY = cy;
+
+                    String directionX = "";
+                    String directionY = "";
+                    if(cx < rx) {
+                        testX = rx;
+                        directionX = "left";
+                    }
+                    else if(cx > rx + rw) {
+                        testX = rx+rw;
+                        directionX = "right";
+                    }
+                    if(cy > ry) {
+                        testY = ry;
+                        directionY = "up";
+                    }
+                    else if(cy < ry-rh) {
+                        testY = ry-rh;
+                        directionY = "down";
+                    }
+
+                    double distX = cx-testX;
+                    double distY = cy-testY;
+                    double distance = Math.sqrt((distX*distX) + (distY*distY));
+
+                    if(distance <= r - 0.5) {
+                        tile.collide = true;
+                        if(directionX == (String)"left") {
+                            player.canMoveRight = false;
+                            
+                        }
+                        else if(directionX == (String)"right") {
+                            player.canMoveLeft = false;
+                        }
+                        else {
+                            player.canMoveLeft = true;
+                            player.canMoveRight = true;
+                        }
+                        
+                        if(directionY == (String)"up") {
+
+                            player.canMoveDown = false;
+                            
+                        }
+                        else if(directionY == (String)"down") {
+                            player.canMoveUp = false;
+                        }
+                        
+                        else {
+                            player.canMoveUp = true;
+                            player.canMoveDown = true;
+                        } 
+                        
+                        
+                    } else {
+                        
+                        tile.collide = false;
+
+                    }
+                }
+            }
+        }
+    }
+    private void checkCollisions() {
+        tileCollide();
+        entityCollide();
+
+
     }
 
     private GroundTile[][] generateMap(int size) {
@@ -55,9 +139,16 @@ public class Game {
 
                 int tileX = x - (size / 2);
                 int tileY = y - (size / 2);
-                // tileY = tileY;
-                // System.out.println(tileY);
-                genMap[x][y] = new GroundTile(tileX, tileY, rand.nextInt(2));
+
+                int type = rand.nextInt(10);
+                if(type < 4) {
+                    type = 0;
+                } else if(type > 4 && type < 10) {
+                    type = 1;
+                } else {
+                    type = 2;
+                }
+                genMap[x][y] = new GroundTile(tileX, tileY, type);
                 // System.out.println(genMap[x][y].getY());
 
                 // System.out.println(genMap[x][y].y);
@@ -96,8 +187,8 @@ public class Game {
 
         while(true) {
             startTime = new Date().getTime();
-            player.move();
             checkCollisions();
+            player.move();
             camera.move(player);
             gameView.repaint();
             endTime = new Date().getTime();

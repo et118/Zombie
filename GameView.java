@@ -21,7 +21,7 @@ public class GameView extends JPanel {
     private long fpsEnd;
     private GroundTile[][] map;
     private Camera camera;
-    private int scale;
+    public int scale;
     private int width;
     private int height;
     private Image grassImage;
@@ -75,10 +75,19 @@ public class GameView extends JPanel {
                    
                     if(tile.type == 0) {
                         g2d.drawImage(grassImage, (int)Vx, (int)Vy, scale, scale, this);
-                    } else {
+                    } else if(tile.type == 1){
                         g2d.drawImage(sandImage, (int)Vx, (int)Vy, scale, scale, this);
+                    } else {
+                        if(tile.collide) {
+                            g2d.setColor(Color.orange);
+                            g2d.fillRect((int)Vx, (int)Vy, scale, scale);
+                        } else {
+                            g2d.setColor(Color.blue);
+                            g2d.fillRect((int)Vx, (int)Vy, scale, scale);
+                        }
                         
                     }
+                    g2d.setColor(Color.black);
                     g2d.drawString("X:" + Integer.toString(tile.x) + "Y:" + Integer.toString(tile.y), (int)(Vx) + (scale / 2) - 20, (int)Vy + scale / 2);
                     //if(tile.getY() == 3 && tile.getX() == 2) {
                     //    g2d.drawString("str", (int)(Vx) + scale / 2, (int)Vy + scale / 2);

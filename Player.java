@@ -10,12 +10,24 @@ public class Player {
     public double x;
     public double y;
     public double size;
+    public boolean canMoveLeft;
+    public boolean canMoveRight;
+    public boolean canMoveUp;
+    public boolean canMoveDown;
     public Player(double x, double y,double xSpeed, double ySpeed,double size) {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.x = x;
         this.y = y;
         this.size = size;
+        canMoveLeft = true;
+        canMoveRight = true;
+        canMoveUp = true;
+        canMoveDown = true;
+    }
+
+    public void test() {
+        System.out.println(canMoveUp);
     }
 
     public void move() {
@@ -25,16 +37,17 @@ public class Player {
         } else {
             multi = 1;
         }
-        if(w_pressed && !s_pressed ) {
+        //System.out.println(canMoveDown);
+        if(w_pressed && !s_pressed && canMoveUp) {
             y += ySpeed * multi;
         }
-        if(s_pressed && !w_pressed){
+        if(s_pressed && !w_pressed && canMoveDown){
             y -= ySpeed * multi;
         }
-        if(a_pressed && !d_pressed ){
+        if(a_pressed && !d_pressed && canMoveLeft){
             x -= xSpeed * multi;
         }
-        if(d_pressed && !a_pressed) {
+        if(d_pressed && !a_pressed && canMoveRight) {
             x += xSpeed * multi;
         }
     }
