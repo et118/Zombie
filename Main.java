@@ -3,5 +3,10 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Game game = new Game(1234);
         game.start();
+    
+    
+    //TODO fix clipping into objects. 
+    //TODO only check for collision on nearby entities and tiles
+    //TODO so the speed that you can move is not dependant on the fps
     }
 }

@@ -37,6 +37,18 @@ public class Game {
             if (Math.pow(player.x - entity.x, 2) + Math.pow(entity.y - player.y, 2) <= Math
                     .pow(entity.size / 2 + player.size / 2, 2)) {
                 entity.collide = true;
+
+                if(entity.y > player.y) {
+                    player.canMoveUp = false;
+                } else {
+                    player.canMoveDown = false;
+                }
+                if(entity.x > player.x) {
+                    player.canMoveRight = false;
+                } else {
+                    player.canMoveRight = false;
+                }
+
             } else {
                 entity.collide = false;
             }
@@ -96,10 +108,6 @@ public class Game {
                         else if(directionX == (String)"right") {
                             player.canMoveLeft = false;
                         }
-                        else {
-                            player.canMoveLeft = true;
-                            player.canMoveRight = true;
-                        }
                         
                         if(directionY == (String)"up") {
 
@@ -109,11 +117,6 @@ public class Game {
                         else if(directionY == (String)"down") {
                             player.canMoveUp = false;
                         }
-                        
-                        else {
-                            player.canMoveUp = true;
-                            player.canMoveDown = true;
-                        } 
                         
                         
                     } else {
