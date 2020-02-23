@@ -14,6 +14,8 @@ public class Player {
     public boolean canMoveRight;
     public boolean canMoveUp;
     public boolean canMoveDown;
+    public int slideX;
+    public int slideY;
     public Player(double x, double y,double xSpeed, double ySpeed,double size) {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
@@ -24,10 +26,6 @@ public class Player {
         canMoveRight = true;
         canMoveUp = true;
         canMoveDown = true;
-    }
-
-    public void test() {
-        System.out.println(canMoveUp);
     }
 
     public void move() {
@@ -49,6 +47,12 @@ public class Player {
         }
         if(d_pressed && !a_pressed && canMoveRight) {
             x += xSpeed * multi;
+        }
+        if(slideX != 0) {
+            x += slideX * xSpeed * multi;
+        }
+        if(slideY != 0) {
+            y += slideY * ySpeed * multi;
         }
     }
 

@@ -61,6 +61,9 @@ public class Game {
         player.canMoveUp = true;
         player.canMoveLeft = true;
         player.canMoveRight = true;
+        player.slideX = 0;
+        player.slideY = 0;
+
         for (int x = 0; x < mapSize; x++) {
             for (int y = 0; y < mapSize; y++) {
                 GroundTile tile = map[x][y];
@@ -103,19 +106,46 @@ public class Game {
                         tile.collide = true;
                         if(directionX == (String)"left") {
                             player.canMoveRight = false;
+                            if(player.d_pressed && player.y > tile.y + 0.5) {
+                                player.slideX = 1;
+                                player.slideY = 1;
+                            } else if(player.d_pressed && player.y < tile.y - 0.5) {
+                                player.slideX = 1;
+                                player.slideY = -1;
+                            }
                             
                         }
                         else if(directionX == (String)"right") {
                             player.canMoveLeft = false;
+                            if(player.a_pressed && player.y > tile.y + 0.5) {
+                                player.slideX = -1;
+                                player.slideY = 1;
+                            } else if(player.a_pressed && player.y < tile.y - 0.5) {
+                                player.slideX = -1;
+                                player.slideY = -1;
+                            }
                         }
                         
                         if(directionY == (String)"up") {
-
                             player.canMoveDown = false;
+                            if(player.s_pressed && player.x > tile.x + 0.5) {
+                                player.slideX = 1;
+                                player.slideY = -1;
+                            } else if(player.s_pressed && player.x < tile.x - 0.5) {
+                                player.slideX = -1;
+                                player.slideY = -1;
+                            }
                             
                         }
                         else if(directionY == (String)"down") {
                             player.canMoveUp = false;
+                            if(player.w_pressed && player.x > tile.x + 0.5 ) {
+                                player.slideX = 1;
+                                player.slideY = 1;
+                            } else if(player.w_pressed && player.x < tile.x - 0.5) {
+                                player.slideX = -1;
+                                player.slideY = 1;
+                            }
                         }
                         
                         

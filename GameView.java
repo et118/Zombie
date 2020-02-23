@@ -85,6 +85,7 @@ public class GameView extends JPanel {
                             g2d.setColor(Color.blue);
                             g2d.fillRect((int)Vx, (int)Vy, scale, scale);
                         }
+                        //g2d.drawOval((int)Vx - 10, (int)Vy-10, 20 , 20);
                         
                     }
                     g2d.setColor(Color.black);
